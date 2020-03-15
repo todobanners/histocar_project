@@ -4,16 +4,46 @@
 #################################################################
 #################################################################
 from django import forms
-from webapp.models import Servicio, Usuario
+from webapp.models import Servicio, Usuario, Vehiculo
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserCreationForm
 from django.utils.translation import gettext_lazy as _
-
+from django.forms import ModelForm, Select, MultipleChoiceField
 class ServicioForm(forms.ModelForm):
-
     class Meta:
         model = Servicio
         fields = ('fecha', 'textoOtros', 'kilometros', 'costo', 'vehiculo',  'tareas',  'estados')
+        widgets = {
+        #    'estados': forms.Select(),
+        }
+        #La manera de guardar este campo es buscar en google acerca de guardar un m2m select. 
+        
+
+
+# class CrearServicioForm(forms.Form):
+#     name = forms.CharField(
+#         label='Nombre',
+#     )
+
+#     email = forms.EmailField(
+#         label='Correo electrónico',
+#     )
+
+#     message = forms.CharField(
+#         label='Mensaje',
+#         widget=forms.Textarea,
+#     )
+
+class crearVehiculos(forms.ModelForm):
+    class Meta:
+        model = Vehiculo
+        fields = ('modelo', 'color', 'nroChasis', 'matricula', 'anio', 'tipoCombustible', 'duenio')
+        labels = {
+            'duenio': _('Dueño del vehiculo'),
+            'nroChasis': _('Numero de chasis'),
+            'anio': _('Año'),
+            'tipoCombustible': _('Combustible')
+        }
 
 class registroUsuario(UserCreationForm):
     error_css_class = 'form-control is-invalid'
